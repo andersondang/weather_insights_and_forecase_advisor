@@ -1,5 +1,20 @@
 # Weather Insights and Forecast Advisor
 
+> **Quick Links:** [Live Demo](#-live-demo) | [Documentation](#-documentation) | [Architecture](./ARCHITECTURE.md) | [Diagrams](./DIAGRAMS.md) | [Setup](#installation) | [Deployment](#deployment)
+
+## 📋 Table of Contents
+- [Overview](#overview)
+- [Live Demo](#-live-demo)
+- [Documentation](#-documentation)
+- [System Architecture](#system-architecture)
+- [Use Case Examples](#use-case-examples)
+- [Component Details](#component-details)
+- [Technical Stack](#technical-stack)
+- [Installation](#installation)
+- [Deployment](#deployment)
+
+---
+
 ## Overview
 
 The Weather Insights and Forecast Advisor is a production-ready, full-stack multi-agent system designed to provide critical weather-related insights for emergency management, public safety, and disaster preparedness. Built with Google's Agent Development Kit (ADK), the system features a modern React UI and combines real-time weather forecasts with historical demographic and geographic data to enable data-driven decision-making during severe weather events.
@@ -80,6 +95,37 @@ The Weather Insights and Forecast Advisor is a production-ready, full-stack mult
 
 - **Frontend:** https://weather-insights-forecaster.web.app
 - **Backend API:** https://weather-insights-agent-79797180773.us-central1.run.app
+
+---
+
+## 📚 Documentation
+
+### Architecture & Design
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Complete system architecture with Mermaid diagrams
+  - System overview and capabilities
+  - Multi-agent architecture diagram
+  - Detailed agent descriptions (6 agents)
+  - Complete tool catalog (16+ tools)
+  - Model usage (gemini-2.5-flash & gemini-2.5-flash-lite)
+
+- **[DIAGRAMS.md](./DIAGRAMS.md)** - Additional visual diagrams
+  - Agent-Tool usage matrix
+  - Sequence diagrams for all data flows
+  - Sub-agent architecture details
+  - External API integration map
+  - Demo mode state machine
+  - Model distribution charts
+
+- **[DEMO_FLOWS.md](./DEMO_FLOWS.md)** - Demo use case flows (coming soon)
+  - Dashboard alerts loading
+  - Forecast lookup
+  - Emergency resources search
+  - Hurricane simulation
+  - Chat conversation flows
+  - Risk analysis
+
+### Frontend
+- **[frontend/README.md](./frontend/README.md)** - Frontend architecture and setup
 
 ---
 
