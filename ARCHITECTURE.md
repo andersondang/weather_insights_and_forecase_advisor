@@ -5,7 +5,8 @@
 - [Complete Architecture Diagram](#complete-architecture-diagram)
 - [Agent Descriptions](#agent-descriptions)
 - [Tool Catalog](#tool-catalog)
-- [Demo Use Case Flows](./DEMO_FLOWS.md)
+- [Additional Diagrams](./DIAGRAMS.md) - Sequence diagrams, data flows, and more
+- [Demo Use Case Flows](./DEMO_FLOWS.md) - Detailed demo scenarios
 
 ---
 
@@ -291,5 +292,25 @@ For detailed flow diagrams of all demo use cases, see [DEMO_FLOWS.md](./DEMO_FLO
 
 ---
 
-**Live Demo:** https://weather-insights-forecaster.web.app
+## 📊 Additional Resources
+
+- **[DIAGRAMS.md](./DIAGRAMS.md)** - Comprehensive Mermaid.js diagrams including:
+  - Agent-Tool usage matrix
+  - Sequence diagrams for all data flows
+  - Sub-agent architecture details
+  - External API integration map
+  - Demo mode state machine
+  
+- **[DEMO_FLOWS.md](./DEMO_FLOWS.md)** - Detailed demo use case flows
+
+- **[Main README](./README.md)** - Project setup and deployment instructions
+
+---
+
+**Live Demo:** https://weather-insights-forecaster.web.app  
 **Backend API:** https://weather-insights-agent-79797180773.us-central1.run.app
+
+**Note:** Mermaid diagrams render automatically on GitHub. For local viewing, use:
+- GitHub/GitLab (native support)
+- VS Code with Mermaid extension
+- [Mermaid Live Editor](https://mermaid.live)
