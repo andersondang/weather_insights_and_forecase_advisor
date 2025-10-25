@@ -27,6 +27,7 @@ The Weather Insights and Forecast Advisor is a **production-ready multi-agent sy
 ## 🏗️ Complete Architecture Diagram
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 graph TB
     subgraph Frontend["🌐 FRONTEND (React + Tailwind)"]
         Dashboard["📊 Dashboard<br/>Page"]

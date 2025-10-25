@@ -7,6 +7,7 @@ Additional Mermaid.js diagrams for the Weather Insights & Forecast Advisor syste
 ## Agent Tool Usage Matrix
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px'}, 'flowchart': {'curve':'basis'}}}%%
 graph LR
     subgraph Agents
         A1[Alerts Snapshot]
@@ -93,6 +94,7 @@ graph LR
 ## Data Flow: Dashboard Alerts Loading
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 sequenceDiagram
     participant User
     participant Dashboard
@@ -133,6 +135,7 @@ sequenceDiagram
 ## Data Flow: Forecast Lookup
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 sequenceDiagram
     participant User
     participant Forecast
@@ -170,6 +173,7 @@ sequenceDiagram
 ## Data Flow: Hurricane Simulation
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 sequenceDiagram
     participant User
     participant HurricanePage
@@ -210,6 +214,7 @@ sequenceDiagram
 ## Data Flow: Chat Conversation
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 sequenceDiagram
     participant User
     participant Chat
@@ -253,6 +258,7 @@ sequenceDiagram
 ## Agent Sub-Agent Architecture
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px'}}}%%
 graph TB
     subgraph AlertsSnapshot["🚨 Alerts Snapshot Agent"]
         AR[alerts_retriever_agent<br/>Fetches from NWS API<br/>Filters by severity]
@@ -297,6 +303,7 @@ graph TB
 ## Tool Categories
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px'}}}%%
 mindmap
   root((Shared Tools<br/>Library))
     Weather Tools
@@ -326,6 +333,7 @@ mindmap
 ## External API Integration
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px'}}}%%
 graph LR
     subgraph System["Weather Insights System"]
         Tools[Shared Tools]
@@ -374,6 +382,7 @@ graph LR
 ## Demo Mode Flow
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
 stateDiagram-v2
     [*] --> Dashboard: User starts tour
     Dashboard --> Alerts: Auto-load national alerts
@@ -404,6 +413,7 @@ stateDiagram-v2
 ## Model Usage
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px'}}}%%
 pie title Agent Model Distribution
     "gemini-2.5-flash" : 60
     "gemini-2.5-flash-lite" : 40
