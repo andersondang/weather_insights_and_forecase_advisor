@@ -26,16 +26,33 @@ function MapController({ center, zoom, markers }) {
   const map = useMap();
   
   useEffect(() => {
-    if (markers && markers.length > 1) {
+    // Filter out invalid markers (null, undefined, or missing lat/lng)
+    const validMarkers = markers?.filter(marker => 
+      marker && 
+      marker.lat != null && 
+      marker.lng != null &&
+      !isNaN(marker.lat) && 
+      !isNaN(marker.lng)
+    ) || [];
+    
+    if (validMarkers.length > 1) {
       // If we have multiple markers, fit bounds to show all markers
-      const bounds = L.latLngBounds(markers.map(marker => [marker.lat, marker.lng]));
-      map.fitBounds(bounds, { 
-        padding: [20, 20], // Add padding around the bounds
-        maxZoom: 12 // Don't zoom in too much
-      });
-    } else if (markers && markers.length === 1) {
+      try {
+        const bounds = L.latLngBounds(validMarkers.map(marker => [marker.lat, marker.lng]));
+        map.fitBounds(bounds, { 
+          padding: [20, 20], // Add padding around the bounds
+          maxZoom: 12 // Don't zoom in too much
+        });
+      } catch (error) {
+        console.error('Error fitting bounds:', error);
+        // Fallback to default center
+        if (center) {
+          map.setView(center, zoom);
+        }
+      }
+    } else if (validMarkers.length === 1) {
       // Single marker - center on it with reasonable zoom
-      map.setView([markers[0].lat, markers[0].lng], 10);
+      map.setView([validMarkers[0].lat, validMarkers[0].lng], 10);
     } else if (center) {
       // Fallback to provided center and zoom
       map.setView(center, zoom);
@@ -64,31 +81,39 @@ const LocationMap = ({ center, markers = [], height = '450px' }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Plot all markers */}
-        {markers && markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={[marker.lat, marker.lng]}
-            icon={redIcon}
-          >
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-bold text-gray-900 mb-1">{marker.title}</h3>
-                {marker.address && (
-                  <p className="text-sm text-gray-600 mb-2">{marker.address}</p>
-                )}
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${marker.lat},${marker.lng}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline text-sm"
-                >
-                  Get Directions →
-                </a>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {/* Plot all markers - filter out invalid ones */}
+        {markers && markers
+          .filter(marker => 
+            marker && 
+            marker.lat != null && 
+            marker.lng != null &&
+            !isNaN(marker.lat) && 
+            !isNaN(marker.lng)
+          )
+          .map((marker, index) => (
+            <Marker
+              key={index}
+              position={[marker.lat, marker.lng]}
+              icon={redIcon}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-bold text-gray-900 mb-1">{marker.title}</h3>
+                  {marker.address && (
+                    <p className="text-sm text-gray-600 mb-2">{marker.address}</p>
+                  )}
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${marker.lat},${marker.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline text-sm"
+                  >
+                    Get Directions →
+                  </a>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
       </MapContainer>
     </div>
   );

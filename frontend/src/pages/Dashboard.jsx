@@ -4,6 +4,9 @@ import LocationMap from '../components/LocationMap';
 import RiskAnalysisModal from '../components/RiskAnalysisModal';
 import SevereWeatherCard from '../components/SevereWeatherCard';
 import api from '../services/api';
+import { useDemoMode } from '../contexts/DemoModeContext';
+import { useTour } from '../contexts/TourContext';
+import { mockDashboardData, mockRiskAnalysis } from '../data/mockData';
 import { 
   MagnifyingGlassIcon, 
   ExclamationTriangleIcon, 
@@ -17,6 +20,9 @@ import {
 } from '@heroicons/react/24/outline';
 
 const Dashboard = () => {
+  const { isDemoMode } = useDemoMode();
+  const { isTourActive, currentStep, tourSteps } = useTour();
+  
   const [alerts, setAlerts] = useState(() => {
     const saved = localStorage.getItem('dashboardAlerts');
     return saved ? JSON.parse(saved) : [];
@@ -99,6 +105,43 @@ const Dashboard = () => {
   useEffect(() => {
     localStorage.setItem('dashboardSelectedRegion', selectedRegion);
   }, [selectedRegion]);
+
+  // Load mock data when tour reaches dashboard steps
+  useEffect(() => {
+    if (isTourActive && isDemoMode && tourSteps[currentStep]) {
+      const currentStepId = tourSteps[currentStep].id;
+      
+      // Load mock data when tour reaches dashboard-alerts or dashboard-map steps
+      if (currentStepId === 'dashboard-alerts' || currentStepId === 'dashboard-map') {
+        console.log('[Dashboard] Tour active - loading mock data');
+        
+        // Set mock alerts
+        setSevereEvents(mockDashboardData.alerts);
+        setAgentResponse(mockDashboardData.insights);
+        setLocation('Tampa Bay, Florida');
+        setSelectedRegion('South');
+        setSelectedFilter('region');
+        
+        // Set mock map data
+        if (mockDashboardData.map_data) {
+          setAlertMarkers(mockDashboardData.map_data.markers || []);
+          if (mockDashboardData.map_data.center) {
+            setMapCenter([mockDashboardData.map_data.center.lat, mockDashboardData.map_data.center.lng]);
+          }
+        }
+        
+        // Auto-trigger risk analysis popup at the risk-analysis tour step
+        if (currentStepId === 'risk-analysis' && mockDashboardData.alerts.length > 0) {
+          setTimeout(() => {
+            console.log('[Dashboard] Auto-opening risk analysis modal for tour step');
+            setSelectedAlertForAnalysis(mockDashboardData.alerts[0]);
+            setRiskAnalysis(mockRiskAnalysis);
+            setIsRiskModalOpen(true);
+          }, 500); // Short delay for smooth transition
+        }
+      }
+    }
+  }, [isTourActive, currentStep, isDemoMode, tourSteps]);
 
   useEffect(() => {
     // Auto-load national alerts on mount - only run once
@@ -662,7 +705,7 @@ const Dashboard = () => {
       />
       {/* Severe Weather Events Section */}
       {severeEvents.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6" data-tour-id="alerts-section">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold text-gray-900">🌪️ Active Severe Weather Events</h2>
             <div className="flex items-center gap-3">
@@ -909,7 +952,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Weather Context Map with Alert Markers */}
-        <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+        <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6" data-tour-id="map-section">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             📍 {location || (alertMarkers && alertMarkers.length > 0 ? 'United States' : 'Select Location')} {alertMarkers && alertMarkers.length > 0 && `(${alertMarkers.length} Alert Zone${alertMarkers.length > 1 ? 's' : ''})`}
           </h2>

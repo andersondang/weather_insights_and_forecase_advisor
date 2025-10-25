@@ -4,16 +4,21 @@ import {
   HomeIcon, 
   CloudIcon, 
   ExclamationTriangleIcon, 
-  ChartBarIcon, 
   MapPinIcon,
   ChatBubbleLeftRightIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  PlayIcon,
+  SignalIcon
 } from '@heroicons/react/24/outline';
 import api from '../services/api';
+import { useDemoMode } from '../contexts/DemoModeContext';
+import TourGuide from './TourGuide';
+import TourButton from './TourButton';
 
 const Layout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDemoMode, toggleDemoMode } = useDemoMode();
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
@@ -33,6 +38,19 @@ const Layout = ({ children }) => {
     }
   };
 
+  const handleToggleDemo = () => {
+    toggleDemoMode();
+    // Optional: show a toast notification
+    const message = !isDemoMode 
+      ? '🎬 Demo Mode Activated - Using realistic mock data' 
+      : '📡 Live Mode Activated - Using real weather data';
+    
+    // Simple alert for now (you can replace with a toast library)
+    setTimeout(() => {
+      alert(message);
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -44,6 +62,33 @@ const Layout = ({ children }) => {
               <h1 className="text-2xl font-bold">Weather Insights & Forecast Advisor</h1>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Tour Button */}
+              <TourButton />
+              
+              {/* Demo Mode Toggle */}
+              <button
+                onClick={handleToggleDemo}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  isDemoMode
+                    ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400 shadow-lg'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+                title={isDemoMode ? 'Switch to Live Data' : 'Switch to Demo Mode'}
+                data-tour-id="demo-toggle"
+              >
+                {isDemoMode ? (
+                  <>
+                    <PlayIcon className="h-5 w-5" />
+                    <span className="text-sm font-bold">DEMO MODE</span>
+                  </>
+                ) : (
+                  <>
+                    <SignalIcon className="h-5 w-5" />
+                    <span className="text-sm">Live Data</span>
+                  </>
+                )}
+              </button>
+              
               <button 
                 onClick={handleClearAll}
                 className="flex items-center space-x-2 px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
@@ -51,18 +96,6 @@ const Layout = ({ children }) => {
               >
                 <ArrowPathIcon className="h-5 w-5" />
                 <span className="text-sm font-medium">Clear All</span>
-              </button>
-              <button className="text-white hover:text-gray-200">
-                <span className="sr-only">Help</span>
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
-              <button className="text-white hover:text-gray-200">
-                <span className="sr-only">User menu</span>
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
               </button>
             </div>
           </div>
@@ -96,6 +129,33 @@ const Layout = ({ children }) => {
         </div>
       </nav>
 
+      {/* Demo Mode Banner */}
+      {isDemoMode && (
+        <div className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 border-b-4 border-yellow-600">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <PlayIcon className="h-6 w-6 text-gray-900 animate-pulse" />
+                <div>
+                  <p className="text-sm font-bold text-gray-900">
+                    🎬 DEMO MODE ACTIVE
+                  </p>
+                  <p className="text-xs text-gray-800">
+                    Showing realistic mock data for Hurricane Milton scenario • Click "Live Data" to switch to real weather data
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={handleToggleDemo}
+                className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
+              >
+                Switch to Live
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
@@ -109,6 +169,9 @@ const Layout = ({ children }) => {
           </p>
         </div>
       </footer>
+
+      {/* Tour Guide Overlay */}
+      <TourGuide />
     </div>
   );
 };

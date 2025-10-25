@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MagnifyingGlassIcon, ArrowPathIcon, SunIcon, CloudIcon, BoltIcon, CloudArrowDownIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import api from '../services/api';
+import { useDemoMode } from '../contexts/DemoModeContext';
+import { useTour } from '../contexts/TourContext';
+import { mockForecastData } from '../data/mockData';
 
 const WeatherIcon = ({ conditions, className }) => {
   const normalizedConditions = conditions.toLowerCase();
@@ -20,6 +23,9 @@ const WeatherIcon = ({ conditions, className }) => {
 };
 
 const Forecast = () => {
+  const { isDemoMode } = useDemoMode();
+  const { isTourActive, currentStep, tourSteps } = useTour();
+  
   const [location, setLocation] = useState(() => {
     return localStorage.getItem('forecastLocation') || '';
   });
@@ -63,6 +69,47 @@ const Forecast = () => {
     };
   }, []);
 
+  // Load mock forecast when tour reaches forecast page - simulate typing and loading
+  useEffect(() => {
+    if (isTourActive && isDemoMode && tourSteps[currentStep]) {
+      const currentStepId = tourSteps[currentStep].id;
+      
+      if (currentStepId === 'forecast-page') {
+        console.log('[Forecast] Tour active - simulating search for Tampa, FL');
+        
+        // Clear any existing data first
+        setLocation('');
+        setForecastData(null);
+        
+        // Simulate typing "Tampa, FL" character by character
+        const locationText = 'Tampa, FL';
+        let currentIndex = 0;
+        
+        const typingInterval = setInterval(() => {
+          if (currentIndex <= locationText.length) {
+            setLocation(locationText.substring(0, currentIndex));
+            currentIndex++;
+          } else {
+            clearInterval(typingInterval);
+            
+            // After typing is complete, show loading spinner
+            setTimeout(() => {
+              setLoading(true);
+              
+              // After 2 seconds of loading, show the forecast
+              setTimeout(() => {
+                setLoading(false);
+                setForecastData(mockForecastData);
+              }, 2000);
+            }, 500);
+          }
+        }, 100); // Type one character every 100ms
+        
+        return () => clearInterval(typingInterval);
+      }
+    }
+  }, [isTourActive, currentStep, isDemoMode, tourSteps]);
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!location.trim()) return;
@@ -95,7 +142,7 @@ const Forecast = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-tour-id="forecast-section">
       {/* Search Bar */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <form onSubmit={handleSearch} className="flex space-x-4">

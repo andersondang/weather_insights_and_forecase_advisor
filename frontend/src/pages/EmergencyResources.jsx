@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { MapPinIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import LocationMap from '../components/LocationMap';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { MagnifyingGlassIcon, MapPinIcon, PhoneIcon, BuildingOffice2Icon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import api from '../services/api';
+import LocationMap from '../components/LocationMap';
+import ReactMarkdown from 'react-markdown';
+import { useDemoMode } from '../contexts/DemoModeContext';
+import { useTour } from '../contexts/TourContext';
+import { mockEmergencyResources } from '../data/mockData';
 
 const resourceDetails = {
   shelters: { icon: '🏠', title: 'Emergency Shelters' },
@@ -11,6 +14,9 @@ const resourceDetails = {
 };
 
 const EmergencyResources = () => {
+  const { isDemoMode } = useDemoMode();
+  const { isTourActive, currentStep, tourSteps } = useTour();
+  
   const [location, setLocation] = useState(() => localStorage.getItem('emergencyLocation') || '');
   const [resourceType, setResourceType] = useState(() => localStorage.getItem('emergencyResourceType') || 'shelters');
   const [radius, setRadius] = useState(() => Number(localStorage.getItem('emergencyRadius')) || 10);
@@ -44,6 +50,69 @@ const EmergencyResources = () => {
     window.addEventListener('sessionExpired', handleSessionExpired);
     return () => window.removeEventListener('sessionExpired', handleSessionExpired);
   }, []);
+
+  // Load mock resources when tour reaches emergency resources page - simulate typing and loading
+  useEffect(() => {
+    if (isTourActive && isDemoMode && tourSteps && tourSteps[currentStep]) {
+      const currentStepId = tourSteps[currentStep].id;
+      
+      if (currentStepId === 'emergency-resources') {
+        console.log('[EmergencyResources] Tour active - simulating search for Tampa, FL');
+        
+        // Clear any existing data first
+        setLocation('');
+        setAgentResponse('');
+        setFullResponse(null);
+        setMapMarkers([]);
+        setMapCenter(null);
+        setResourceType('shelters');
+        
+        // Simulate typing "Tampa, FL" character by character
+        const locationText = 'Tampa, FL';
+        let currentIndex = 0;
+        
+        const typingInterval = setInterval(() => {
+          if (currentIndex <= locationText.length) {
+            setLocation(locationText.substring(0, currentIndex));
+            currentIndex++;
+          } else {
+            clearInterval(typingInterval);
+            
+            // After typing is complete, show loading spinner
+            setTimeout(() => {
+              setLoading(true);
+              
+              // After 2 seconds of loading, show the results
+              setTimeout(() => {
+                try {
+                  setLoading(false);
+                  setAgentResponse(mockEmergencyResources.summary || '');
+                  setFullResponse(mockEmergencyResources);
+                  
+                  // Set map markers from shelters with varied coordinates
+                  if (mockEmergencyResources.shelters && Array.isArray(mockEmergencyResources.shelters)) {
+                    const markers = mockEmergencyResources.shelters.map((shelter, index) => ({
+                      lat: 27.9506 + (index * 0.02), // Spread markers slightly
+                      lng: -82.4572 + (index * 0.02),
+                      title: shelter.name,
+                      address: shelter.address
+                    }));
+                    setMapMarkers(markers);
+                    setMapCenter([27.9506, -82.4572]);
+                  }
+                } catch (error) {
+                  console.error('[EmergencyResources] Error loading mock data:', error);
+                  setLoading(false);
+                }
+              }, 2000);
+            }, 500);
+          }
+        }, 100); // Type one character every 100ms
+        
+        return () => clearInterval(typingInterval);
+      }
+    }
+  }, [isTourActive, currentStep, isDemoMode, tourSteps]);
 
   const handleSearch = useCallback(async (e) => {
     if (e) e.preventDefault();
@@ -107,7 +176,7 @@ const EmergencyResources = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-tour-id="resources-section">
       {/* Search Form */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center justify-between mb-4">
