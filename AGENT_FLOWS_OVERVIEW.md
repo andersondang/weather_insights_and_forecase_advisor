@@ -16,6 +16,101 @@ This document provides a comprehensive view of all 6 agents in the Weather Insig
 
 ---
 
+## 🏗️ Complete System Architecture
+
+**High-Level View: Frontend, Backend Agents, and External APIs**
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+graph TB
+    subgraph Frontend["🌐 FRONTEND (React + Tailwind)"]
+        Dashboard["📊 Dashboard<br/>Page"]
+        Chat["💬 Chat<br/>Page"]
+        Forecast["🌤️ Forecast<br/>Page"]
+        Emergency["🏥 Emergency<br/>Resources"]
+        Hurricane["🌀 Hurricane<br/>Simulation"]
+        APIService["🔌 API Service<br/>(Axios)"]
+        
+        Dashboard --> APIService
+        Chat --> APIService
+        Forecast --> APIService
+        Emergency --> APIService
+        Hurricane --> APIService
+    end
+    
+    subgraph Backend["⚙️ BACKEND (Multi-Agent System)"]
+        subgraph AlertsAgent["🚨 Alerts Snapshot Agent<br/>Port: 8081"]
+            AlertsRetriever["alerts_retriever_agent"]
+            AlertsCoordinator["alerts_coordinator_agent"]
+            AlertsRetriever --> AlertsCoordinator
+        end
+        
+        ForecastAgent["🌤️ Forecast Agent<br/>Port: 8082<br/>Tools: get_nws_forecast,<br/>get_hourly_forecast,<br/>geocode_address"]
+        
+        RiskAgent["⚠️ Risk Analysis Agent<br/>Port: 8083<br/>Tools: get_census_demographics,<br/>get_flood_risk_data"]
+        
+        EmergencyAgent["🏥 Emergency Resources Agent<br/>Port: 8084<br/>Tools: geocode_address,<br/>search_nearby_places,<br/>generate_map"]
+        
+        subgraph HurricaneAgent["🌀 Hurricane Simulation Agent<br/>Port: 8085"]
+            ImageAnalysis["hurricane_image_analysis"]
+            EvacCoordinator["evacuation_coordinator"]
+            ImageAnalysis --> EvacCoordinator
+        end
+        
+        ChatAgent["💬 Chat Agent<br/>Port: 8090<br/>ALL TOOLS"]
+        
+        subgraph SharedTools["🛠️ Shared Tools Library"]
+            WeatherTools["☁️ Weather Tools<br/>NWS API"]
+            MapsTools["🗺️ Maps Tools<br/>Google Maps"]
+            DataTools["📊 Data Tools<br/>BigQuery"]
+        end
+    end
+    
+    subgraph External["🌍 External APIs"]
+        NWS["🌦️ NWS API<br/>Weather Data"]
+        GoogleMaps["🗺️ Google Maps API<br/>Geocoding, Places"]
+        BigQuery["📊 BigQuery<br/>Census, Historical Data"]
+    end
+    
+    APIService -->|HTTP/JSON| AlertsAgent
+    APIService -->|HTTP/JSON| ForecastAgent
+    APIService -->|HTTP/JSON| RiskAgent
+    APIService -->|HTTP/JSON| EmergencyAgent
+    APIService -->|HTTP/JSON| HurricaneAgent
+    APIService -->|HTTP/JSON| ChatAgent
+    
+    AlertsAgent --> WeatherTools
+    ForecastAgent --> WeatherTools
+    ForecastAgent --> MapsTools
+    RiskAgent --> WeatherTools
+    RiskAgent --> MapsTools
+    RiskAgent --> DataTools
+    EmergencyAgent --> MapsTools
+    HurricaneAgent --> DataTools
+    ChatAgent --> WeatherTools
+    ChatAgent --> MapsTools
+    ChatAgent --> DataTools
+    
+    WeatherTools --> NWS
+    MapsTools --> GoogleMaps
+    DataTools --> BigQuery
+    
+    style Frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style Backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    style External fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    style AlertsAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style HurricaneAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style SharedTools fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+```
+
+**Key Architecture Highlights:**
+- **Frontend:** React-based SPA with 5 specialized pages
+- **Backend:** 6 independent agents deployed as Cloud Run services
+- **Shared Tools:** Centralized tool library for consistency
+- **External APIs:** NWS (weather), Google Maps (geocoding/places), BigQuery (data)
+
+---
+
 ## 1. 🚨 Alerts Snapshot Agent
 
 **Purpose:** Load and display severe weather alerts with map visualization
