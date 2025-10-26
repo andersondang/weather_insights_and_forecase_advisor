@@ -129,14 +129,6 @@ Each document contains both simplified agent flow diagrams and detailed sequence
   - Response synthesis into conversational format
   - Access to all 16+ tools across the system
 
-### 📊 Additional Resources
-
-- **[SYSTEM_ARCHITECTURE.md](./SYSTEM_ARCHITECTURE.md)** - Detailed technical architecture
-  - Frontend architecture (React, Tailwind, Leaflet)
-  - Backend multi-agent system (Google ADK)
-  - API integration patterns
-  - State management and session handling
-
 ---
 
 ## 🏗️ System Architecture
