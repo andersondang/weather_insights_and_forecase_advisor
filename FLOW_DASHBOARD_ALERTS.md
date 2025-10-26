@@ -32,11 +32,11 @@ graph LR
         direction TB
         
         subgraph Step1["STEP 1: Retrieval"]
-            Retriever["alerts_retriever_agent<br/><br/>🎯 Goal: Get top alerts<br/><br/>Actions:<br/>1️⃣ Call get_nws_alerts<br/>2️⃣ Filter by severity<br/>3️⃣ Limit to top 5<br/>4️⃣ Extract zone IDs<br/><br/>Output: alerts + zone_ids"]
+            Retriever["<br/>alerts_retriever_agent<br/><br/>🎯 Goal: Get top alerts<br/><br/>Actions:<br/>1️⃣ Call get_nws_alerts<br/>2️⃣ Filter by severity<br/>3️⃣ Limit to top 5<br/>4️⃣ Extract zone IDs<br/><br/>Output: alerts + zone_ids<br/><br/>"]
         end
         
         subgraph Step2["STEP 2: Coordination"]
-            Coordinator["alerts_coordinator_agent<br/><br/>🎯 Goal: Enrich with coordinates<br/><br/>Actions:<br/>1️⃣ Read alerts from state<br/>2️⃣ For each zone_id:<br/>   • Call get_zone_coordinates<br/>   • Calculate centroid<br/>3️⃣ Create map markers<br/>4️⃣ Generate summary<br/><br/>Output: AlertsSnapshot"]
+            Coordinator["<br/>alerts_coordinator_agent<br/><br/>🎯 Goal: Enrich with coordinates<br/><br/>Actions:<br/>1️⃣ Read alerts from state<br/>2️⃣ For each zone_id:<br/>   • Call get_zone_coordinates<br/>   • Calculate centroid<br/>3️⃣ Create map markers<br/>4️⃣ Generate summary<br/><br/>Output: AlertsSnapshot<br/><br/>"]
         end
         
         Step1 --> Step2

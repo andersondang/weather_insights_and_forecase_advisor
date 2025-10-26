@@ -33,11 +33,11 @@ graph LR
         direction TB
         
         subgraph Step1["STEP 1: Image Analysis"]
-            ImageAnalysis["hurricane_image_analysis_agent<br/><br/>🎯 Goal: Extract hurricane metadata<br/><br/>AI: Gemini Vision API<br/><br/>Actions:<br/>1️⃣ Analyze satellite image<br/>2️⃣ Detect hurricane category (1-5)<br/>3️⃣ Identify affected states<br/>4️⃣ Extract bounding box<br/><br/>Output: HurricaneData<br/>(category, states, coordinates)"]
+            ImageAnalysis["<br/>hurricane_image_analysis_agent<br/><br/>🎯 Goal: Extract hurricane metadata<br/><br/>AI: Gemini Vision API<br/><br/>Actions:<br/>1️⃣ Analyze satellite image<br/>2️⃣ Detect hurricane category (1-5)<br/>3️⃣ Identify affected states<br/>4️⃣ Extract bounding box<br/><br/>Output: HurricaneData<br/>(category, states, coordinates)<br/><br/>"]
         end
         
         subgraph Step2["STEP 2: Evacuation Planning"]
-            EvacCoordinator["evacuation_coordinator_agent<br/><br/>🎯 Goal: Prioritize evacuation zones<br/><br/>Tools: get_flood_risk_data,<br/>calculate_evacuation_priority<br/><br/>Actions:<br/>1️⃣ For each affected state:<br/>   • Query flood risk data (BigQuery)<br/>   • Get historical events<br/>2️⃣ Calculate risk scores:<br/>   • Base risk = category × 2<br/>   • Add flood severity<br/>3️⃣ Deduplicate coordinates<br/>4️⃣ Sort by risk, limit to top 20<br/><br/>Output: EvacuationPlan"]
+            EvacCoordinator["<br/>evacuation_coordinator_agent<br/><br/>🎯 Goal: Prioritize evacuation zones<br/><br/>Tools: get_flood_risk_data,<br/>calculate_evacuation_priority<br/><br/>Actions:<br/>1️⃣ For each affected state:<br/>   • Query flood risk data (BigQuery)<br/>   • Get historical events<br/>2️⃣ Calculate risk scores:<br/>   • Base risk = category × 2<br/>   • Add flood severity<br/>3️⃣ Deduplicate coordinates<br/>4️⃣ Sort by risk, limit to top 20<br/><br/>Output: EvacuationPlan<br/><br/>"]
         end
         
         Step1 --> Step2

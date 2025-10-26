@@ -32,15 +32,15 @@ graph LR
         direction TB
         
         subgraph Step1["STEP 1: Geocoding"]
-            Geocode["🎯 Goal: Convert location to coordinates<br/><br/>Tool: geocode_address<br/><br/>Action:<br/>• Call Google Maps API<br/>• 'Tampa, FL' → lat/lng<br/><br/>Output: 27.95, -82.45"]
+            Geocode["<br/>🎯 Goal: Convert location to coordinates<br/><br/>Tool: geocode_address<br/><br/>Action:<br/>• Call Google Maps API<br/>• 'Tampa, FL' → lat/lng<br/><br/>Output: 27.95, -82.45<br/><br/>"]
         end
         
         subgraph Step2["STEP 2: Grid Lookup"]
-            Grid["🎯 Goal: Get NWS grid point<br/><br/>Tool: get_nws_forecast<br/><br/>Action:<br/>• Call NWS /points API<br/>• Get gridId, gridX, gridY<br/><br/>Output: TBW/64/68"]
+            Grid["<br/>🎯 Goal: Get NWS grid point<br/><br/>Tool: get_nws_forecast<br/><br/>Action:<br/>• Call NWS /points API<br/>• Get gridId, gridX, gridY<br/><br/>Output: TBW/64/68<br/><br/>"]
         end
         
         subgraph Step3["STEP 3: Fetch Forecasts"]
-            Fetch["🎯 Goal: Get weather data<br/><br/>Tools: get_nws_forecast, get_hourly_forecast<br/><br/>Actions:<br/>• Get 7-day forecast (14 periods)<br/>• Get hourly forecast (48 hours)<br/>• Group day/night periods<br/><br/>Output: ForecastData"]
+            Fetch["<br/>🎯 Goal: Get weather data<br/><br/>Tools: get_nws_forecast,<br/>get_hourly_forecast<br/><br/>Actions:<br/>• Get 7-day forecast (14 periods)<br/>• Get hourly forecast (48 hours)<br/>• Group day/night periods<br/><br/>Output: ForecastData<br/><br/>"]
         end
         
         Step1 --> Step2
