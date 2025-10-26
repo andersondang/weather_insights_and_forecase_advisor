@@ -39,8 +39,13 @@ A production-ready, full-stack multi-agent system that provides critical weather
 
 ## 🌐 Live Demo
 
-- **Frontend:** https://weather-insights-forecaster.web.app
-- **Backend API:** https://weather-insights-agent-79797180773.us-central1.run.app
+- **App:** https://weather-insights-advisor.web.app/
+- **Weather Risk Analysis Agent:** https://weather-risk-analysis-agent-juqzb7sbxa-uc.a.run.app
+- **Weather Alerts Snapshot Agent:** https://weather-alerts-snapshot-agent-juqzb7sbxa-uc.a.run.app
+- **Chat Agent:** https://weather-chat-agent-juqzb7sbxa-uc.a.run.app
+- **Hurricane Simulation Agent:** https://weather-hurricane-simulation-agent-juqzb7sbxa-uc.a.run.app
+- **Emergency Resource Finding Agent:** https://weather-emergency-resources-agent-juqzb7sbxa-uc.a.run.app
+- **Weather Forecasting Agent:** https://weather-forecast-agent-juqzb7sbxa-uc.a.run.app
 
 ### Features
 
