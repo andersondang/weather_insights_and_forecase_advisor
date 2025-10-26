@@ -1,0 +1,23 @@
+{
+    "name": "weather_alerts_snapshot_agent",
+    "description": "An agent that retrieves and analyzes the top 5 most severe active weather alerts across the United States from the National Weather Service API.",
+    "defaultInputModes": ["text/plain"],
+    "defaultOutputModes": ["application/json"],
+    "skills": [
+        {
+            "id": "get_severe_alerts",
+            "name": "Get Severe Weather Alerts",
+            "description": "Fetch and filter the most critical active weather alerts nationwide, including coordinates for map visualization.",
+            "tags": ["weather", "alerts", "emergency", "monitoring"]
+        },
+        {
+            "id": "map_alert_zones",
+            "name": "Map Alert Zones",
+            "description": "Enrich weather alerts with geographic coordinates for zone boundaries and create map markers.",
+            "tags": ["mapping", "geocoding", "visualization"]
+        }
+    ],
+    "url": "https://weather-alerts-snapshot-agent-juqzb7sbxa-uc.a.run.app",
+    "capabilities": {},
+    "version": "1.0.0"
+}

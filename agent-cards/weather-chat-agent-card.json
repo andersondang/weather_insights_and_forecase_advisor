@@ -1,0 +1,59 @@
+{
+    "name": "weather_chat_orchestrator_agent",
+    "description": "An orchestrator agent that handles natural language weather queries and intelligently routes requests to specialized weather agents. Provides conversational access to all 16+ weather, mapping, and data analysis tools.",
+    "defaultInputModes": ["text/plain"],
+    "defaultOutputModes": ["application/json"],
+    "skills": [
+        {
+            "id": "natural_language_query",
+            "name": "Natural Language Query",
+            "description": "Process natural language weather questions and route to appropriate specialized agents.",
+            "tags": ["NLP", "conversation", "orchestration", "intent classification"]
+        },
+        {
+            "id": "multi_turn_conversation",
+            "name": "Multi-turn Conversation",
+            "description": "Maintain context across multiple conversation turns for follow-up questions.",
+            "tags": ["conversation", "context management", "chat"]
+        },
+        {
+            "id": "route_to_alerts",
+            "name": "Route to Alerts Agent",
+            "description": "Direct alert-related queries to the alerts snapshot workflow.",
+            "tags": ["routing", "alerts", "orchestration"]
+        },
+        {
+            "id": "route_to_forecast",
+            "name": "Route to Forecast Agent",
+            "description": "Direct forecast queries to the weather forecast workflow.",
+            "tags": ["routing", "forecast", "orchestration"]
+        },
+        {
+            "id": "route_to_risk_analysis",
+            "name": "Route to Risk Analysis Agent",
+            "description": "Direct risk assessment queries to the risk analysis workflow.",
+            "tags": ["routing", "risk analysis", "orchestration"]
+        },
+        {
+            "id": "route_to_emergency_resources",
+            "name": "Route to Emergency Resources Agent",
+            "description": "Direct resource finding queries to the emergency resources workflow.",
+            "tags": ["routing", "emergency resources", "orchestration"]
+        },
+        {
+            "id": "route_to_hurricane_simulation",
+            "name": "Route to Hurricane Simulation Agent",
+            "description": "Direct hurricane analysis queries to the hurricane simulation agent.",
+            "tags": ["routing", "hurricane", "orchestration"]
+        },
+        {
+            "id": "synthesize_response",
+            "name": "Synthesize Response",
+            "description": "Combine results from multiple agents into coherent conversational responses.",
+            "tags": ["synthesis", "response generation", "NLP"]
+        }
+    ],
+    "url": "https://weather-chat-agent-juqzb7sbxa-uc.a.run.app",
+    "capabilities": {},
+    "version": "1.0.0"
+}
