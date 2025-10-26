@@ -17,7 +17,58 @@ This flow shows how users search for weather forecasts by location and receive d
 
 ---
 
-## Sequence Diagram
+## 🤖 Agent Flow - How It Works
+
+**Simple View: Single Agent, Multi-Step Process**
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'20px', 'fontFamily':'arial'}}}%%
+graph LR
+    subgraph Input["📥 INPUT"]
+        UserRequest["User Request:<br/>'Get forecast for Tampa, FL'"]
+    end
+    
+    subgraph ForecastAgent["🌤️ FORECAST AGENT"]
+        direction TB
+        
+        subgraph Step1["STEP 1: Geocoding"]
+            Geocode["🎯 Goal: Convert location to coordinates<br/><br/>Tool: geocode_address<br/><br/>Action:<br/>• Call Google Maps API<br/>• 'Tampa, FL' → lat/lng<br/><br/>Output: 27.95, -82.45"]
+        end
+        
+        subgraph Step2["STEP 2: Grid Lookup"]
+            Grid["🎯 Goal: Get NWS grid point<br/><br/>Tool: get_nws_forecast<br/><br/>Action:<br/>• Call NWS /points API<br/>• Get gridId, gridX, gridY<br/><br/>Output: TBW/64/68"]
+        end
+        
+        subgraph Step3["STEP 3: Fetch Forecasts"]
+            Fetch["🎯 Goal: Get weather data<br/><br/>Tools: get_nws_forecast, get_hourly_forecast<br/><br/>Actions:<br/>• Get 7-day forecast (14 periods)<br/>• Get hourly forecast (48 hours)<br/>• Group day/night periods<br/><br/>Output: ForecastData"]
+        end
+        
+        Step1 --> Step2
+        Step2 --> Step3
+    end
+    
+    subgraph Output["📤 OUTPUT"]
+        Response["ForecastData:<br/>• Location info<br/>• 7-day forecast<br/>• 48-hour hourly<br/>• Weather details"]
+    end
+    
+    UserRequest --> Step1
+    Step3 --> Response
+    
+    style Input fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style ForecastAgent fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style Step1 fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style Step2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Step3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Output fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+```
+
+**Key Insight:** The agent uses a **three-step sequential process** - geocode location, find NWS grid, then fetch both daily and hourly forecasts in parallel.
+
+---
+
+## 🔄 Complete Sequence Diagram
+
+**Detailed View: Full System Interaction**
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px', 'fontFamily':'arial'}, 'sequence': {'mirrorActors': false, 'messageAlign': 'center'}}}%%

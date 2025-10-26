@@ -18,7 +18,52 @@ This flow shows how users upload hurricane satellite images and receive AI-power
 
 ---
 
-## Sequence Diagram
+## 🤖 Agent Flow - How It Works
+
+**Simple View: Two Sub-Agents with AI Vision**
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'20px', 'fontFamily':'arial'}}}%%
+graph LR
+    subgraph Input["📥 INPUT"]
+        UserRequest["User Action:<br/>Uploads hurricane<br/>satellite image"]
+    end
+    
+    subgraph HurricaneAgent["🌀 HURRICANE SIMULATION AGENT"]
+        direction TB
+        
+        subgraph Step1["STEP 1: Image Analysis"]
+            ImageAnalysis["hurricane_image_analysis_agent<br/><br/>🎯 Goal: Extract hurricane metadata<br/><br/>AI: Gemini Vision API<br/><br/>Actions:<br/>1️⃣ Analyze satellite image<br/>2️⃣ Detect hurricane category (1-5)<br/>3️⃣ Identify affected states<br/>4️⃣ Extract bounding box<br/><br/>Output: HurricaneData<br/>(category, states, coordinates)"]
+        end
+        
+        subgraph Step2["STEP 2: Evacuation Planning"]
+            EvacCoordinator["evacuation_coordinator_agent<br/><br/>🎯 Goal: Prioritize evacuation zones<br/><br/>Tools: get_flood_risk_data,<br/>calculate_evacuation_priority<br/><br/>Actions:<br/>1️⃣ For each affected state:<br/>   • Query flood risk data (BigQuery)<br/>   • Get historical events<br/>2️⃣ Calculate risk scores:<br/>   • Base risk = category × 2<br/>   • Add flood severity<br/>3️⃣ Deduplicate coordinates<br/>4️⃣ Sort by risk, limit to top 20<br/><br/>Output: EvacuationPlan"]
+        end
+        
+        Step1 --> Step2
+    end
+    
+    subgraph Output["📤 OUTPUT"]
+        Response["EvacuationPlan:<br/>• Top 20 high-risk locations<br/>• Risk scores<br/>• Affected states<br/>• AI insights<br/>• Recommendations"]
+    end
+    
+    UserRequest --> Step1
+    Step2 --> Response
+    
+    style Input fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style HurricaneAgent fill:#ffebee,stroke:#c62828,stroke-width:4px
+    style Step1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Step2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Output fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+```
+
+**Key Insight:** The agent combines **AI Vision** (Gemini) for image analysis with **historical data** (BigQuery) to create data-driven evacuation priorities.
+
+---
+
+## 🔄 Complete Sequence Diagram
+
+**Detailed View: Full System Interaction**
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px', 'fontFamily':'arial'}, 'sequence': {'mirrorActors': false, 'messageAlign': 'center'}}}%%
