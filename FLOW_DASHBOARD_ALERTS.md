@@ -17,7 +17,52 @@ This flow shows how the Dashboard page loads and displays active severe weather 
 
 ---
 
-## Sequence Diagram
+## 🤖 Agent Flow - How It Works
+
+**Simple View: Two Sub-Agents Working Together**
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'20px', 'fontFamily':'arial'}}}%%
+graph LR
+    subgraph Input["📥 INPUT"]
+        UserRequest["User Request:<br/>'Get severe weather alerts'"]
+    end
+    
+    subgraph AlertsAgent["🚨 ALERTS SNAPSHOT AGENT"]
+        direction TB
+        
+        subgraph Step1["STEP 1: Retrieval"]
+            Retriever["alerts_retriever_agent<br/><br/>🎯 Goal: Get top alerts<br/><br/>Actions:<br/>1️⃣ Call get_nws_alerts<br/>2️⃣ Filter by severity<br/>3️⃣ Limit to top 5<br/>4️⃣ Extract zone IDs<br/><br/>Output: alerts + zone_ids"]
+        end
+        
+        subgraph Step2["STEP 2: Coordination"]
+            Coordinator["alerts_coordinator_agent<br/><br/>🎯 Goal: Enrich with coordinates<br/><br/>Actions:<br/>1️⃣ Read alerts from state<br/>2️⃣ For each zone_id:<br/>   • Call get_zone_coordinates<br/>   • Calculate centroid<br/>3️⃣ Create map markers<br/>4️⃣ Generate summary<br/><br/>Output: AlertsSnapshot"]
+        end
+        
+        Step1 --> Step2
+    end
+    
+    subgraph Output["📤 OUTPUT"]
+        Response["AlertsSnapshot:<br/>• 5 severe alerts<br/>• Map markers (lat/lng)<br/>• Summary text"]
+    end
+    
+    UserRequest --> Step1
+    Step2 --> Response
+    
+    style Input fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style AlertsAgent fill:#ffebee,stroke:#c62828,stroke-width:4px
+    style Step1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Step2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Output fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+```
+
+**Key Insight:** The agent uses a **two-stage pipeline** - first retrieve and filter alerts, then enrich with geographic data for mapping.
+
+---
+
+## 🔄 Complete Sequence Diagram
+
+**Detailed View: Full System Interaction**
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px', 'fontFamily':'arial'}, 'sequence': {'mirrorActors': false, 'messageAlign': 'center'}}}%%
