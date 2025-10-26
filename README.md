@@ -138,15 +138,17 @@ Each document contains both simplified agent flow diagrams and detailed sequence
 The system uses **6 specialized agents** built with Google's Agent Development Kit (ADK), each optimized for specific weather intelligence tasks:
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'20px', 'fontFamily':'arial'}}}%%
 graph TB
-    subgraph Frontend["🌐 FRONTEND (React + Tailwind)"]
-        Dashboard["📊 Dashboard<br/>Page"]
-        Chat["💬 Chat<br/>Page"]
-        Forecast["🌤️ Forecast<br/>Page"]
-        Emergency["🏥 Emergency<br/>Resources"]
-        Hurricane["🌀 Hurricane<br/>Simulation"]
-        APIService["🔌 API Service<br/>(Axios)"]
+    subgraph Frontend["🌐 FRONTEND - React Application"]
+        direction TB
+        Dashboard["📊 Dashboard Page<br/><br/>• Active Weather Alerts<br/>• Interactive Map<br/>• Severity Filtering<br/>• Auto-refresh"]
+        Chat["💬 Chat Page<br/><br/>• Natural Language Queries<br/>• Conversation History<br/>• Multi-turn Context<br/>• All Agent Access"]
+        Forecast["🌤️ Forecast Page<br/><br/>• 7-Day Forecast<br/>• Hourly Predictions<br/>• Location Search<br/>• Weather Details"]
+        Emergency["🏥 Emergency Resources<br/><br/>• Shelter Finder<br/>• Hospital Locator<br/>• Pharmacy Search<br/>• Route Planning"]
+        Hurricane["🌀 Hurricane Simulation<br/><br/>• Image Upload<br/>• Category Detection<br/>• Evacuation Priorities<br/>• Risk Mapping"]
+        
+        APIService["🔌 API Service Layer<br/><br/>• Axios HTTP Client<br/>• Session Management<br/>• Error Handling<br/>• Response Caching"]
         
         Dashboard --> APIService
         Chat --> APIService
@@ -155,46 +157,52 @@ graph TB
         Hurricane --> APIService
     end
     
-    subgraph Backend["⚙️ BACKEND (Multi-Agent System)"]
-        subgraph AlertsAgent["🚨 Alerts Snapshot Agent<br/>Port: 8081"]
-            AlertsRetriever["alerts_retriever_agent"]
-            AlertsCoordinator["alerts_coordinator_agent"]
+    subgraph Backend["⚙️ BACKEND - Multi-Agent System (Google ADK)"]
+        direction TB
+        
+        subgraph AlertsAgent["🚨 ALERTS SNAPSHOT AGENT<br/>Port: 8081<br/>Model: gemini-2.5-flash"]
+            direction LR
+            AlertsRetriever["alerts_retriever_agent<br/><br/>• Fetch NWS alerts<br/>• Filter by severity<br/>• Limit to top 5<br/>• Extract zone IDs"]
+            AlertsCoordinator["alerts_coordinator_agent<br/><br/>• Get zone coordinates<br/>• Create map markers<br/>• Synthesize response<br/>• Format AlertsSnapshot"]
             AlertsRetriever --> AlertsCoordinator
         end
         
-        ForecastAgent["🌤️ Forecast Agent<br/>Port: 8082<br/>Tools: get_nws_forecast,<br/>get_hourly_forecast,<br/>geocode_address"]
+        ForecastAgent["🌤️ FORECAST AGENT<br/>Port: 8082<br/>Model: gemini-2.5-flash<br/><br/>Tools:<br/>• get_nws_forecast<br/>• get_hourly_forecast<br/>• geocode_address<br/><br/>Capabilities:<br/>• 7-day forecasts<br/>• 48-hour hourly<br/>• Location geocoding<br/>• Weather details"]
         
-        RiskAgent["⚠️ Risk Analysis Agent<br/>Port: 8083<br/>Tools: get_census_demographics,<br/>get_flood_risk_data"]
+        RiskAgent["⚠️ RISK ANALYSIS AGENT<br/>Port: 8083<br/>Model: gemini-2.5-flash<br/><br/>Tools:<br/>• get_census_demographics<br/>• get_flood_risk_data<br/>• get_nws_alerts<br/><br/>Capabilities:<br/>• Vulnerability assessment<br/>• Historical flood data<br/>• Population analysis<br/>• Risk scoring"]
         
-        EmergencyAgent["🏥 Emergency Resources Agent<br/>Port: 8084<br/>Tools: geocode_address,<br/>search_nearby_places,<br/>generate_map"]
+        EmergencyAgent["🏥 EMERGENCY RESOURCES AGENT<br/>Port: 8084<br/>Model: gemini-2.5-flash<br/><br/>Tools:<br/>• geocode_address<br/>• search_nearby_places<br/>• generate_map<br/>• get_directions<br/><br/>Capabilities:<br/>• Find shelters/hospitals<br/>• Route planning<br/>• Interactive maps<br/>• Distance calculation"]
         
-        subgraph HurricaneAgent["🌀 Hurricane Simulation Agent<br/>Port: 8085"]
-            ImageAnalysis["hurricane_image_analysis"]
-            EvacCoordinator["evacuation_coordinator"]
+        subgraph HurricaneAgent["🌀 HURRICANE SIMULATION AGENT<br/>Port: 8085<br/>Model: gemini-2.5-flash"]
+            direction LR
+            ImageAnalysis["hurricane_image_analysis<br/><br/>• Gemini Vision API<br/>• Extract category<br/>• Identify states<br/>• Get bounding box"]
+            EvacCoordinator["evacuation_coordinator<br/><br/>• Query flood data<br/>• Calculate risk scores<br/>• Prioritize locations<br/>• Generate plan"]
             ImageAnalysis --> EvacCoordinator
         end
         
-        ChatAgent["💬 Chat Agent<br/>Port: 8090<br/>ALL TOOLS"]
+        ChatAgent["💬 CHAT ORCHESTRATOR AGENT<br/>Port: 8090<br/>Model: gemini-2.5-flash<br/><br/>ALL TOOLS (16+ tools)<br/><br/>Routing:<br/>• Alerts → alerts_snapshot_workflow<br/>• Forecast → forecast_workflow<br/>• Risk → risk_analysis_workflow<br/>• Resources → emergency_resources_workflow<br/>• Hurricane → HurricaneSimulationAgent<br/><br/>Capabilities:<br/>• Natural language understanding<br/>• Intent classification<br/>• Multi-turn conversations<br/>• Context management"]
         
-        subgraph SharedTools["🛠️ Shared Tools Library"]
-            WeatherTools["☁️ Weather Tools<br/>NWS API"]
-            MapsTools["🗺️ Maps Tools<br/>Google Maps"]
-            DataTools["📊 Data Tools<br/>BigQuery"]
+        subgraph SharedTools["🛠️ SHARED TOOLS LIBRARY"]
+            direction TB
+            WeatherTools["☁️ Weather Tools<br/><br/>• get_nws_alerts<br/>• get_nws_forecast<br/>• get_hourly_forecast<br/>• get_current_conditions<br/>• get_hurricane_track<br/>• get_zone_coordinates"]
+            MapsTools["🗺️ Maps Tools<br/><br/>• geocode_address<br/>• get_directions<br/>• search_nearby_places<br/>• generate_map<br/>• reverse_geocode"]
+            DataTools["📊 Data Tools<br/><br/>• get_census_demographics<br/>• get_flood_risk_data<br/>• get_census_tracts_in_area<br/>• find_nearest_weather_station<br/>• calculate_evacuation_priority"]
         end
     end
     
-    subgraph External["🌍 External APIs"]
-        NWS["🌦️ NWS API<br/>Weather Data"]
-        GoogleMaps["🗺️ Google Maps API<br/>Geocoding, Places"]
-        BigQuery["📊 BigQuery<br/>Census, Historical Data"]
+    subgraph External["🌍 EXTERNAL APIs & DATA SOURCES"]
+        direction TB
+        NWS["🌦️ National Weather Service<br/><br/>• api.weather.gov<br/>• Active alerts<br/>• Forecasts (7-day, hourly)<br/>• Current conditions<br/>• Zone data"]
+        GoogleMaps["🗺️ Google Maps Platform<br/><br/>• Geocoding API<br/>• Places API<br/>• Directions API<br/>• Maps Static API<br/>• Distance Matrix"]
+        BigQuery["📊 Google BigQuery<br/><br/>• Census demographics<br/>• Historical flood events<br/>• Weather station data<br/>• Census tract boundaries<br/>• NOAA datasets"]
     end
     
-    APIService -->|HTTP/JSON| AlertsAgent
-    APIService -->|HTTP/JSON| ForecastAgent
-    APIService -->|HTTP/JSON| RiskAgent
-    APIService -->|HTTP/JSON| EmergencyAgent
-    APIService -->|HTTP/JSON| HurricaneAgent
-    APIService -->|HTTP/JSON| ChatAgent
+    APIService -->|"HTTP POST<br/>JSON Payload"| AlertsAgent
+    APIService -->|"HTTP POST<br/>JSON Payload"| ForecastAgent
+    APIService -->|"HTTP POST<br/>JSON Payload"| RiskAgent
+    APIService -->|"HTTP POST<br/>JSON Payload"| EmergencyAgent
+    APIService -->|"HTTP POST<br/>Multipart Form"| HurricaneAgent
+    APIService -->|"HTTP POST<br/>JSON Payload"| ChatAgent
     
     AlertsAgent --> WeatherTools
     ForecastAgent --> WeatherTools
@@ -208,16 +216,17 @@ graph TB
     ChatAgent --> MapsTools
     ChatAgent --> DataTools
     
-    WeatherTools --> NWS
-    MapsTools --> GoogleMaps
-    DataTools --> BigQuery
+    WeatherTools -->|"REST API<br/>JSON Response"| NWS
+    MapsTools -->|"REST API<br/>JSON Response"| GoogleMaps
+    DataTools -->|"SQL Queries<br/>Table Results"| BigQuery
     
-    style Frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
-    style Backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
-    style External fill:#fff3e0,stroke:#f57c00,stroke-width:3px
-    style AlertsAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style HurricaneAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style SharedTools fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:4px,color:#000
+    style Backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:4px,color:#000
+    style External fill:#fff3e0,stroke:#f57c00,stroke-width:4px,color:#000
+    style AlertsAgent fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000
+    style HurricaneAgent fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000
+    style SharedTools fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
+    style ChatAgent fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#000
 ```
 
 ### 🤖 Agent Descriptions
