@@ -75,7 +75,7 @@ A production-ready, full-stack multi-agent system that provides critical weather
 
 Detailed flow diagrams showing how each agent processes requests and interacts with external APIs:
 
-- **[AGENT_FLOWS_OVERVIEW.md](./AGENT_FLOWS_OVERVIEW.md)** - **START HERE** - Consolidated overview of all 6 agents
+- **[AGENT_FLOWS_OVERVIEW.md](./AGENT_FLOWS_OVERVIEW.md)** - Consolidated overview of all 6 agents
   - Complete system architecture diagram
   - Simplified flow diagrams for each agent
   - Agent comparison table (type, steps, technology, outputs)
