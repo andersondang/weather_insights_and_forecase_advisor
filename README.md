@@ -10,7 +10,7 @@
 
 A production-ready, full-stack multi-agent system that provides critical weather intelligence for emergency management and public safety. Built with Google's Agent Development Kit (ADK), featuring 6 specialized AI agents that combine real-time weather data with historical demographics and geographic analysis.
 
-**Live Demo:** https://weather-insights-forecaster.web.app
+**Live Demo:** https://weather-insights-advisor.web.app/
 
 ### Key Capabilities
 
