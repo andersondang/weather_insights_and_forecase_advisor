@@ -30,6 +30,25 @@ const TourGuide = () => {
     }
   }, [currentStep, isTourActive, step, navigate, location.pathname]);
 
+  // Scroll to highlighted element when step changes
+  useEffect(() => {
+    if (isTourActive && step && step.highlight) {
+      // Wait for navigation and DOM updates
+      const timer = setTimeout(() => {
+        const element = document.querySelector(`[data-tour-id="${step.highlight}"]`);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+          });
+        }
+      }, 300); // Delay to ensure page has loaded
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep, isTourActive, step]);
+
   if (!isTourActive || !step) return null;
 
   // Center modal for welcome and complete steps

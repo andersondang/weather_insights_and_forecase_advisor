@@ -40,15 +40,7 @@ const Layout = ({ children }) => {
 
   const handleToggleDemo = () => {
     toggleDemoMode();
-    // Optional: show a toast notification
-    const message = !isDemoMode 
-      ? '🎬 Demo Mode Activated - Using realistic mock data' 
-      : '📡 Live Mode Activated - Using real weather data';
-    
-    // Simple alert for now (you can replace with a toast library)
-    setTimeout(() => {
-      alert(message);
-    }, 100);
+    // Demo mode toggle - no popup needed
   };
 
   return (
