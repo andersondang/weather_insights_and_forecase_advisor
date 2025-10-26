@@ -1,6 +1,27 @@
-# Weather Insights and Forecast Advisor
+# 🌦️ Weather Insights and Forecast Advisor
 
-> **Quick Links:** [Live Demo](#-live-demo) | [Documentation](#-documentation) | [Architecture](./ARCHITECTURE.md) | [Diagrams](./DIAGRAMS.md) | [Setup](#installation) | [Deployment](#deployment)
+**AI-Powered Emergency Weather Intelligence System**
+
+> **Quick Links:** [Live Demo](#-live-demo) | [Architecture](#-system-architecture) | [Agent Flows](#-agent-data-flows) | [Documentation](#-documentation) | [Setup](#installation)
+
+---
+
+## 🎯 At a Glance
+
+```
+🌐 PRODUCTION READY          🤖 6 SPECIALIZED AGENTS       📊 3 DATA SOURCES
+   Firebase + Cloud Run         Built with Google ADK         NWS • Google Maps • BigQuery
+
+🎬 DEMO MODE                 ⚡ REAL-TIME                  🗺️ INTERACTIVE MAPS
+   Full-featured tour           Live weather alerts           Leaflet + Google Maps
+
+💬 AI CHAT                   🌀 HURRICANE ANALYSIS         🏥 RESOURCE FINDER
+   Gemini 2.5 Flash             Vision + Historical Data      Shelters • Hospitals • Routes
+```
+
+**Live Demo:** https://weather-insights-forecaster.web.app
+
+---
 
 ## 📋 Table of Contents
 - [Overview](#overview)
@@ -96,6 +117,19 @@ The Weather Insights and Forecast Advisor is a production-ready, full-stack mult
 - **Frontend:** https://weather-insights-forecaster.web.app
 - **Backend API:** https://weather-insights-agent-79797180773.us-central1.run.app
 
+### 🎯 Quick Demo Highlights
+
+| Feature | Technology | Impact |
+|---------|-----------|--------|
+| **🚨 Real-Time Alerts** | NWS API + ADK Agents | Top 5 most critical alerts nationwide, auto-refreshed |
+| **🌀 Hurricane Analysis** | Gemini Vision + BigQuery | Upload satellite images → Get evacuation priorities |
+| **🗺️ Smart Resource Finder** | Google Maps API | Find shelters, hospitals within minutes of any location |
+| **💬 AI Weather Assistant** | Gemini 2.5 Flash | Natural language queries with contextual responses |
+| **📊 Risk Assessment** | Census + Historical Data | Identify vulnerable populations in disaster zones |
+| **🎬 Demo Mode** | Mock Data | Full-featured tour without API limits |
+
+**Tech Stack:** React + Tailwind CSS • Google ADK • Gemini 2.5 Flash • Cloud Run • Firebase Hosting
+
 ---
 
 ## 📚 Documentation
@@ -129,25 +163,253 @@ The Weather Insights and Forecast Advisor is a production-ready, full-stack mult
 
 ---
 
-## System Architecture
+## 🏗️ System Architecture
 
-The Weather Insights and Forecast Advisor follows a **Specialized Multi-Agent Pattern** with five distinct agents:
+### Multi-Agent Architecture Overview
 
-1. **Root Coordinator Agent** - User interface and intelligent query routing
-2. **Location Services Agent** - Google Maps API integration for geocoding, directions, and emergency resources
-3. **NWS Forecast Agent** - National Weather Service API for real-time weather data
-4. **BigQuery Data Agent** - Historical weather and demographic data analysis
-5. **Correlation Insights Agent** - Two-tier risk analysis (simple vs complex events)
+The system uses **6 specialized agents** built with Google's Agent Development Kit (ADK), each optimized for specific weather intelligence tasks:
 
-### Architecture Pattern
-
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+graph TB
+    subgraph Frontend["🌐 FRONTEND (React + Tailwind)"]
+        Dashboard["📊 Dashboard<br/>Page"]
+        Chat["💬 Chat<br/>Page"]
+        Forecast["🌤️ Forecast<br/>Page"]
+        Emergency["🏥 Emergency<br/>Resources"]
+        Hurricane["🌀 Hurricane<br/>Simulation"]
+        APIService["🔌 API Service<br/>(Axios)"]
+        
+        Dashboard --> APIService
+        Chat --> APIService
+        Forecast --> APIService
+        Emergency --> APIService
+        Hurricane --> APIService
+    end
+    
+    subgraph Backend["⚙️ BACKEND (Multi-Agent System)"]
+        subgraph AlertsAgent["🚨 Alerts Snapshot Agent<br/>Port: 8081"]
+            AlertsRetriever["alerts_retriever_agent"]
+            AlertsCoordinator["alerts_coordinator_agent"]
+            AlertsRetriever --> AlertsCoordinator
+        end
+        
+        ForecastAgent["🌤️ Forecast Agent<br/>Port: 8082<br/>Tools: get_nws_forecast,<br/>get_hourly_forecast,<br/>geocode_address"]
+        
+        RiskAgent["⚠️ Risk Analysis Agent<br/>Port: 8083<br/>Tools: get_census_demographics,<br/>get_flood_risk_data"]
+        
+        EmergencyAgent["🏥 Emergency Resources Agent<br/>Port: 8084<br/>Tools: geocode_address,<br/>search_nearby_places,<br/>generate_map"]
+        
+        subgraph HurricaneAgent["🌀 Hurricane Simulation Agent<br/>Port: 8085"]
+            ImageAnalysis["hurricane_image_analysis"]
+            EvacCoordinator["evacuation_coordinator"]
+            ImageAnalysis --> EvacCoordinator
+        end
+        
+        ChatAgent["💬 Chat Agent<br/>Port: 8090<br/>ALL TOOLS"]
+        
+        subgraph SharedTools["🛠️ Shared Tools Library"]
+            WeatherTools["☁️ Weather Tools<br/>NWS API"]
+            MapsTools["🗺️ Maps Tools<br/>Google Maps"]
+            DataTools["📊 Data Tools<br/>BigQuery"]
+        end
+    end
+    
+    subgraph External["🌍 External APIs"]
+        NWS["🌦️ NWS API<br/>Weather Data"]
+        GoogleMaps["🗺️ Google Maps API<br/>Geocoding, Places"]
+        BigQuery["📊 BigQuery<br/>Census, Historical Data"]
+    end
+    
+    APIService -->|HTTP/JSON| AlertsAgent
+    APIService -->|HTTP/JSON| ForecastAgent
+    APIService -->|HTTP/JSON| RiskAgent
+    APIService -->|HTTP/JSON| EmergencyAgent
+    APIService -->|HTTP/JSON| HurricaneAgent
+    APIService -->|HTTP/JSON| ChatAgent
+    
+    AlertsAgent --> WeatherTools
+    ForecastAgent --> WeatherTools
+    ForecastAgent --> MapsTools
+    RiskAgent --> WeatherTools
+    RiskAgent --> MapsTools
+    RiskAgent --> DataTools
+    EmergencyAgent --> MapsTools
+    HurricaneAgent --> DataTools
+    ChatAgent --> WeatherTools
+    ChatAgent --> MapsTools
+    ChatAgent --> DataTools
+    
+    WeatherTools --> NWS
+    MapsTools --> GoogleMaps
+    DataTools --> BigQuery
+    
+    style Frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style Backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    style External fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    style AlertsAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style HurricaneAgent fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style SharedTools fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
-User Query → Root Coordinator → Route to Specialist Agents → Insights Agent → Response
-                ↓                         ↓                           ↓
-         Assess Complexity    Location + Forecast + Data    Simple or Data-Driven Analysis
-                                      ↓
-                              Google Maps Integration
-                         (Geocoding, Directions, Maps)
+
+### 🤖 Agent Descriptions
+
+| Agent | Port | Purpose | Key Tools | Model |
+|-------|------|---------|-----------|-------|
+| **🚨 Alerts Snapshot** | 8081 | Retrieve & synthesize active weather alerts | `get_nws_alerts`, `get_zone_coordinates` | gemini-2.5-flash |
+| **🌤️ Forecast** | 8082 | Provide detailed weather forecasts | `get_nws_forecast`, `get_hourly_forecast`, `geocode_address` | gemini-2.5-flash |
+| **⚠️ Risk Analysis** | 8083 | Assess vulnerability & impact | `get_census_demographics`, `get_flood_risk_data` | gemini-2.5-flash |
+| **🏥 Emergency Resources** | 8084 | Find shelters, hospitals, evacuation routes | `search_nearby_places`, `generate_map` | gemini-2.5-flash |
+| **🌀 Hurricane Simulation** | 8085 | Analyze hurricane images & evacuation priorities | `get_flood_risk_data`, `calculate_evacuation_priority` | gemini-2.5-flash |
+| **💬 Chat** | 8090 | Conversational interface with all capabilities | ALL TOOLS (16+ tools) | gemini-2.5-flash |
+
+### 🛠️ Complete Tool Catalog (16+ Tools)
+
+<details>
+<summary><b>Click to expand tool list</b></summary>
+
+#### Weather Tools (NWS API)
+- `get_nws_alerts` - Retrieve active weather alerts (national/state/point)
+- `get_nws_forecast` - Get 7-day forecast for location
+- `get_hourly_forecast` - Get 48-hour hourly forecast
+- `get_current_conditions` - Current weather from stations
+- `get_hurricane_track` - Hurricane position & forecast
+
+#### Maps Tools (Google Maps API)
+- `geocode_address` - Convert address to coordinates
+- `get_directions` - Multi-route directions with alternatives
+- `search_nearby_places` - Find shelters, hospitals, pharmacies
+- `generate_map` - Create interactive maps with markers
+
+#### Data Tools (BigQuery)
+- `get_census_demographics` - Population, age, income data
+- `get_flood_risk_data` - Historical flood events by location
+- `get_census_tracts_in_area` - Census tract boundaries
+- `find_nearest_weather_station` - Closest NWS station
+- `query_historical_weather` - Past weather patterns
+
+#### Analysis Tools
+- `calculate_evacuation_priority` - Risk scoring algorithm
+- `get_zone_coordinates` - NWS alert zone boundaries
+
+</details>
+
+---
+
+## 🔄 Agent Data Flows
+
+### Dashboard Alerts Loading
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+sequenceDiagram
+    participant User
+    participant Dashboard
+    participant API
+    participant AlertsAgent
+    participant NWS
+    
+    User->>Dashboard: Opens Dashboard
+    Dashboard->>Dashboard: Check localStorage
+    Dashboard->>API: GET /alerts ("all US states")
+    API->>AlertsAgent: POST /query
+    
+    rect rgb(255, 240, 240)
+        Note over AlertsAgent: alerts_retriever_agent
+        AlertsAgent->>NWS: GET /alerts/active
+        NWS-->>AlertsAgent: 357 alerts
+        AlertsAgent->>AlertsAgent: Filter by severity
+        AlertsAgent->>AlertsAgent: Limit to top 5
+    end
+    
+    rect rgb(240, 240, 255)
+        Note over AlertsAgent: alerts_coordinator_agent
+        AlertsAgent->>AlertsAgent: Extract zone IDs
+        AlertsAgent->>NWS: GET /zones/{zone_id}
+        NWS-->>AlertsAgent: Zone coordinates
+        AlertsAgent->>AlertsAgent: Create map markers
+        AlertsAgent->>AlertsAgent: Synthesize response
+    end
+    
+    AlertsAgent-->>API: AlertsSnapshot JSON
+    API-->>Dashboard: Response
+    Dashboard->>Dashboard: Save to localStorage
+    Dashboard->>User: Display alerts + map
+```
+
+### Forecast Lookup Flow
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+sequenceDiagram
+    participant User
+    participant Forecast
+    participant API
+    participant ForecastAgent
+    participant GoogleMaps
+    participant NWS
+    
+    User->>Forecast: Types "Tampa, FL"
+    Forecast->>API: GET /forecast
+    API->>ForecastAgent: POST /query
+    
+    ForecastAgent->>GoogleMaps: Geocode "Tampa, FL"
+    GoogleMaps-->>ForecastAgent: lat: 27.95, lng: -82.45
+    
+    ForecastAgent->>NWS: GET /points/27.95,-82.45
+    NWS-->>ForecastAgent: gridId: TBW, gridX: 64, gridY: 68
+    
+    par Get Daily Forecast
+        ForecastAgent->>NWS: GET /gridpoints/TBW/64,68/forecast
+        NWS-->>ForecastAgent: 14 periods (7 days)
+    and Get Hourly Forecast
+        ForecastAgent->>NWS: GET /gridpoints/TBW/64,68/forecast/hourly
+        NWS-->>ForecastAgent: 48 hourly periods
+    end
+    
+    ForecastAgent->>ForecastAgent: Group day/night periods
+    ForecastAgent-->>API: ForecastData JSON
+    API-->>Forecast: Response
+    Forecast->>User: Display 7-day + hourly forecast
+```
+
+### Hurricane Simulation Flow
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+sequenceDiagram
+    participant User
+    participant HurricanePage
+    participant API
+    participant HurricaneAgent
+    participant BigQuery
+    
+    User->>HurricanePage: Uploads hurricane image
+    HurricanePage->>API: POST /analyze (with image)
+    API->>HurricaneAgent: POST /query
+    
+    rect rgb(255, 245, 240)
+        Note over HurricaneAgent: hurricane_image_analysis_agent
+        HurricaneAgent->>HurricaneAgent: Analyze image (Gemini Vision)
+        HurricaneAgent->>HurricaneAgent: Extract: Category 4, FL/AL/MS/GA/TN
+        HurricaneAgent->>HurricaneAgent: Write to state['hurricane_data']
+    end
+    
+    rect rgb(240, 255, 240)
+        Note over HurricaneAgent: evacuation_coordinator_agent
+        loop For each affected state
+            HurricaneAgent->>BigQuery: Query flood risk data
+            BigQuery-->>HurricaneAgent: Historical flood events
+        end
+        HurricaneAgent->>HurricaneAgent: Accumulate all state data
+        HurricaneAgent->>HurricaneAgent: Calculate risk scores
+        HurricaneAgent->>HurricaneAgent: Deduplicate coordinates
+        HurricaneAgent->>HurricaneAgent: Prioritize top 20 locations
+    end
+    
+    HurricaneAgent-->>API: EvacuationPlan JSON
+    API-->>HurricanePage: Response
+    HurricanePage->>User: Display priorities + map
 ```
 
 ---
