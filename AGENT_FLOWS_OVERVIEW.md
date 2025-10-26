@@ -356,47 +356,65 @@ graph LR
 **Purpose:** Intelligently route natural language queries to specialized agents
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'20px', 'fontFamily':'arial'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'18px', 'fontFamily':'arial'}}}%%
 graph TB
     subgraph Input6["📥 INPUT"]
-        UserQuery["User Query:<br/>'What's the weather in Tampa<br/>and are there any shelters nearby?'"]
+        UserQuery["<br/>User Query:<br/>'What's the weather in Tampa<br/>and are there any shelters nearby?'<br/><br/>"]
     end
     
-    subgraph ChatAgent["💬 CHAT ORCHESTRATOR AGENT"]
-        direction TB
-        
-        subgraph Step1F["STEP 1: Intent Classification"]
-            IntentClassify["<br/>🎯 Goal: Understand user intent<br/><br/>AI: Gemini 2.5 Flash<br/><br/>Actions:<br/>1️⃣ Parse natural language query<br/>2️⃣ Identify intent keywords<br/>3️⃣ Determine required agents<br/>4️⃣ Extract parameters<br/><br/>Output: Intent + Parameters<br/><br/>"]
-        end
-        
-        subgraph Step2F["STEP 2: Route to Agents"]
-            RouteAgents["<br/>🎯 Goal: Call appropriate agents<br/><br/>Routing Logic:<br/>• Weather/Forecast → forecast_workflow<br/>• Alerts → alerts_snapshot_workflow<br/>• Risk → risk_analysis_workflow<br/>• Resources → emergency_resources_workflow<br/>• Hurricane → HurricaneSimulationAgent<br/><br/>Output: Agent responses<br/><br/>"]
-        end
-        
-        subgraph Step3F["STEP 3: Synthesize Response"]
-            Synthesize6["<br/>🎯 Goal: Combine & format results<br/><br/>Actions:<br/>1️⃣ Merge agent outputs<br/>2️⃣ Format for conversation<br/>3️⃣ Add context & insights<br/>4️⃣ Generate natural response<br/><br/>Output: Conversational answer<br/><br/>"]
-        end
-        
-        Step1F --> Step2F
-        Step2F --> Step3F
+    subgraph ChatOrchestrator["💬 CHAT ORCHESTRATOR"]
+        IntentClassifier["<br/>🧠 Intent Classifier<br/><br/>Parse query & identify intent<br/>Extract parameters<br/><br/>"]
+    end
+    
+    subgraph SpecializedAgents["🤖 SPECIALIZED AGENTS (Parallel Routing)"]
+        direction LR
+        AlertsAgent6["<br/>🚨<br/>Alerts<br/>Agent<br/><br/>"]
+        ForecastAgent6["<br/>🌤️<br/>Forecast<br/>Agent<br/><br/>"]
+        RiskAgent6["<br/>⚠️<br/>Risk<br/>Agent<br/><br/>"]
+        EmergencyAgent6["<br/>🏥<br/>Emergency<br/>Agent<br/><br/>"]
+        HurricaneAgent6["<br/>🌀<br/>Hurricane<br/>Agent<br/><br/>"]
+    end
+    
+    subgraph Synthesis["✨ RESPONSE SYNTHESIS"]
+        Synthesizer["<br/>🎯 Response Synthesizer<br/><br/>Merge agent outputs<br/>Format conversationally<br/>Add context & insights<br/><br/>"]
     end
     
     subgraph Output6["📤 OUTPUT"]
-        Response6["Chat Response:<br/>• Weather forecast for Tampa<br/>• 5 nearby shelters<br/>• Conversational format<br/>• Context-aware"]
+        Response6["<br/>Conversational Response:<br/>• Weather forecast for Tampa<br/>• 5 nearby shelters<br/>• Natural language format<br/>• Context-aware insights<br/><br/>"]
     end
     
-    UserQuery --> Step1F
-    Step3F --> Response6
+    UserQuery --> IntentClassifier
+    
+    IntentClassifier -.->|"Weather Query"| ForecastAgent6
+    IntentClassifier -.->|"Alert Query"| AlertsAgent6
+    IntentClassifier -.->|"Risk Query"| RiskAgent6
+    IntentClassifier -.->|"Resource Query"| EmergencyAgent6
+    IntentClassifier -.->|"Hurricane Query"| HurricaneAgent6
+    
+    AlertsAgent6 --> Synthesizer
+    ForecastAgent6 --> Synthesizer
+    RiskAgent6 --> Synthesizer
+    EmergencyAgent6 --> Synthesizer
+    HurricaneAgent6 --> Synthesizer
+    
+    Synthesizer --> Response6
     
     style Input6 fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
-    style ChatAgent fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style Step1F fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
-    style Step2F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style Step3F fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style ChatOrchestrator fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style SpecializedAgents fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    style Synthesis fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
     style Output6 fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    
+    style IntentClassifier fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style AlertsAgent6 fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style ForecastAgent6 fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style RiskAgent6 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style EmergencyAgent6 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style HurricaneAgent6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Synthesizer fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
-**Key Insight:** Intelligent orchestrator - understands natural language, routes to specialized agents, and synthesizes responses into conversational format.
+**Key Insight:** Intelligent orchestrator - understands natural language, **fans out to specialized agents in parallel**, and synthesizes responses into conversational format.
 
 ---
 

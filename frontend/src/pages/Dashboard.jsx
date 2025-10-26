@@ -202,9 +202,19 @@ const Dashboard = () => {
     setIsRiskModalOpen(true);
     setIsAnalyzingRisk(true);
     setRiskAnalysis(null); // Clear previous analysis
+    
     try {
-      const response = await api.analyzeRisk(alert);
-      setRiskAnalysis(response);
+      // Use mock data in demo mode
+      if (isDemoMode) {
+        console.log('[Dashboard] Using mock risk analysis data (demo mode)');
+        // Simulate API delay for realistic demo experience
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setRiskAnalysis(mockRiskAnalysis);
+      } else {
+        // Make real API call in live mode
+        const response = await api.analyzeRisk(alert);
+        setRiskAnalysis(response);
+      }
     } catch (error) {
       console.error('Failed to analyze risk:', error);
       setRiskAnalysis({ error: 'Failed to analyze risk. Please try again.' }); // Set an error state
