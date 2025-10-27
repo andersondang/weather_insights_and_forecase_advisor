@@ -27,6 +27,30 @@ const SevereWeatherCard = ({ event, onAnalyzeRisk }) => {
     return 'from-gray-500 to-gray-700';
   };
 
+  const formatEndTime = (endTime) => {
+    if (!endTime) return 'Unknown';
+    
+    try {
+      const date = new Date(endTime);
+      // Check if date is valid
+      if (isNaN(date.getTime())) return 'Unknown';
+      
+      const dateStr = date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      });
+      const timeStr = date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+      
+      return `${dateStr} at ${timeStr}`;
+    } catch (error) {
+      return 'Unknown';
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       {/* Header */}
@@ -76,8 +100,8 @@ const SevereWeatherCard = ({ event, onAnalyzeRisk }) => {
             <span className={`px-3 py-1 rounded-full text-xs font-bold text-white bg-gray-700`}>
               {event.severity}
             </span>
-            <span className="text-gray-500">
-              Ends: {new Date(event.end_time).toLocaleDateString()} at {new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            <span className="text-gray-500 text-xs">
+              Ends: {formatEndTime(event.end_time)}
             </span>
           </div>
           <button 

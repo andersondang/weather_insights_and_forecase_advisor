@@ -160,17 +160,17 @@ const TourGuide = () => {
     <>
       {/* Bottom banner - compact and thin */}
       <div className="fixed bottom-0 left-0 right-0 z-50 animate-slideUp shadow-2xl">
-        <div className="bg-white border-t-2 border-blue-500">
+        <div className="bg-white border-t-2 border-yellow-400">
           {/* Compact single-line layout */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2">
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-4 py-2">
             <div className="flex items-center justify-between max-w-7xl mx-auto">
               {/* Left: Title and Description */}
               <div className="flex items-center space-x-3 flex-1 min-w-0">
                 <SparklesIcon className="h-4 w-4 flex-shrink-0" />
                 <div className="flex items-center space-x-2 min-w-0">
                   <h3 className="font-semibold text-sm whitespace-nowrap">{step.title}</h3>
-                  <span className="text-white/60 text-xs">•</span>
-                  <p className="text-xs text-white/90 truncate">
+                  <span className="text-gray-800/60 text-xs">•</span>
+                  <p className="text-xs text-gray-900 truncate">
                     {step.description}
                   </p>
                 </div>
@@ -178,12 +178,12 @@ const TourGuide = () => {
 
               {/* Center: Progress */}
               <div className="flex items-center space-x-2 mx-4">
-                <span className="text-xs text-white/80 whitespace-nowrap">
+                <span className="text-xs text-gray-800 whitespace-nowrap">
                   {currentStep + 1}/{tourSteps.length}
                 </span>
-                <div className="w-24 bg-white/20 rounded-full h-1">
+                <div className="w-24 bg-gray-900/20 rounded-full h-1">
                   <div
-                    className="bg-white h-1 rounded-full transition-all duration-300"
+                    className="bg-gray-900 h-1 rounded-full transition-all duration-300"
                     style={{ width: `${((currentStep + 1) / tourSteps.length) * 100}%` }}
                   />
                 </div>
@@ -194,7 +194,7 @@ const TourGuide = () => {
                 {currentStep > 0 && (
                   <button
                     onClick={previousStep}
-                    className="flex items-center space-x-1 px-2 py-1 bg-white/10 hover:bg-white/20 rounded text-xs transition-colors"
+                    className="flex items-center space-x-1 px-2 py-1 bg-gray-900/10 hover:bg-gray-900/20 rounded text-xs transition-colors"
                   >
                     <ArrowLeftIcon className="h-3 w-3" />
                     <span>Back</span>
@@ -202,14 +202,14 @@ const TourGuide = () => {
                 )}
                 <button
                   onClick={nextStep}
-                  className="flex items-center space-x-1 px-3 py-1 bg-white text-blue-600 hover:bg-blue-50 rounded text-xs font-medium transition-colors"
+                  className="flex items-center space-x-1 px-3 py-1 bg-gray-900 text-yellow-400 hover:bg-gray-800 rounded text-xs font-bold transition-colors"
                 >
                   <span>Next</span>
                   <ArrowRightIcon className="h-3 w-3" />
                 </button>
                 <button
                   onClick={skipTour}
-                  className="text-white/60 hover:text-white transition-colors ml-1"
+                  className="text-gray-800 hover:text-gray-900 transition-colors ml-1"
                 >
                   <XMarkIcon className="h-4 w-4" />
                 </button>
@@ -220,7 +220,7 @@ const TourGuide = () => {
 
         {/* Arrow pointing to highlighted element */}
         {step.highlight && (
-          <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white border-r-2 border-b-2 border-blue-500 transform rotate-45" />
+          <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white border-r-2 border-b-2 border-yellow-400 transform rotate-45" />
         )}
       </div>
 
@@ -230,17 +230,17 @@ const TourGuide = () => {
           [data-tour-id="${step.highlight}"] {
             position: relative;
             z-index: 45;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.6), 0 0 20px rgba(249, 115, 22, 0.4);
             border-radius: 8px;
             animation: gentlePulse 2s infinite;
           }
           
           @keyframes gentlePulse {
             0%, 100% {
-              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4);
+              box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.6), 0 0 20px rgba(249, 115, 22, 0.4);
             }
             50% {
-              box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.4), 0 0 30px rgba(59, 130, 246, 0.6);
+              box-shadow: 0 0 0 5px rgba(234, 179, 8, 0.4), 0 0 30px rgba(249, 115, 22, 0.6);
             }
           }
         `}</style>

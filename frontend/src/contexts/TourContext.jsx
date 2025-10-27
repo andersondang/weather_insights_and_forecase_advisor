@@ -43,19 +43,27 @@ export const TourProvider = ({ children }) => {
       position: 'top'
     },
     {
-      id: 'risk-analysis',
-      title: '📊 AI Risk Analysis',
-      description: 'Click "Analyze Risk" on any alert to get detailed impact assessment, safety recommendations, and evacuation guidance powered by AI.',
-      page: '/',
-      highlight: 'alerts-section',
-      position: 'top'
-    },
-    {
       id: 'dashboard-map',
       title: '🗺️ Interactive Alert Map',
       description: 'The map visualizes alert locations. Red markers indicate extreme threats. You can see the hurricane warning zone covering Tampa Bay.',
       page: '/',
       highlight: 'map-section',
+      position: 'top'
+    },
+    {
+      id: 'risk-analysis',
+      title: '📊 AI Risk Analysis',
+      description: 'Scroll back up and click "Analyze Risk" on any alert to get detailed impact assessment, safety recommendations, and evacuation guidance powered by AI.',
+      page: '/',
+      highlight: 'alerts-section',
+      position: 'top'
+    },
+    {
+      id: 'emergency-resources',
+      title: '🏥 Emergency Resources',
+      description: 'Find nearby shelters, hospitals, and evacuation routes. See real-time capacity, amenities, and contact information. Critical for evacuation planning.',
+      page: '/emergency-resources',
+      highlight: 'resources-section',
       position: 'top'
     },
     {
@@ -72,14 +80,6 @@ export const TourProvider = ({ children }) => {
       description: 'See hour-by-hour and daily forecasts. Watch how conditions deteriorate as Hurricane Milton approaches - winds increasing from 25 mph to 150+ mph.',
       page: '/forecast',
       highlight: 'forecast-section',
-      position: 'top'
-    },
-    {
-      id: 'emergency-resources',
-      title: '🏥 Emergency Resources',
-      description: 'Find nearby shelters, hospitals, and evacuation routes. See real-time capacity, amenities, and contact information. Critical for evacuation planning.',
-      page: '/emergency-resources',
-      highlight: 'resources-section',
       position: 'top'
     },
     {

@@ -22,9 +22,9 @@ const Layout = ({ children }) => {
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
+    { name: 'Emergency Resources', href: '/emergency-resources', icon: MapPinIcon },
     { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Forecast', href: '/forecast', icon: CloudIcon },
-    { name: 'Emergency Resources', href: '/emergency-resources', icon: MapPinIcon },
     { name: 'Hurricane Simulation', href: '/hurricane-simulation', icon: ExclamationTriangleIcon },
   ];
 

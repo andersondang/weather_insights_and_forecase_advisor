@@ -12,6 +12,7 @@ export const mockDashboardData = {
       instruction: "EVACUATE IMMEDIATELY if in evacuation zones A, B, or C. This is a life-threatening situation.",
       onset: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
       expires: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+      end_time: "2024-10-09T23:59:59Z",
       urgency: "Immediate",
       certainty: "Observed"
     },
@@ -25,6 +26,7 @@ export const mockDashboardData = {
       instruction: "Be ready to take shelter. Monitor weather radio or local media for warnings.",
       onset: new Date().toISOString(),
       expires: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+      end_time: "2024-10-09T22:00:00Z",
       urgency: "Expected",
       certainty: "Likely"
     },
@@ -38,6 +40,7 @@ export const mockDashboardData = {
       instruction: "Move to higher ground immediately. Do not drive through flooded areas.",
       onset: new Date().toISOString(),
       expires: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+      end_time: "2024-10-09T18:00:00Z",
       urgency: "Immediate",
       certainty: "Observed"
     }
