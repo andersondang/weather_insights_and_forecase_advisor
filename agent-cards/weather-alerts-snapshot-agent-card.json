@@ -5,16 +5,10 @@
     "defaultOutputModes": ["application/json"],
     "skills": [
         {
-            "id": "get_severe_alerts",
-            "name": "Get Severe Weather Alerts",
-            "description": "Fetch and filter the most critical active weather alerts nationwide, including coordinates for map visualization.",
+            "id": "get_weather_a;erts",
+            "name": "Get Weather Alerts",
+            "description": "Get weather alerts for a given location. If no location is provided, get alerts for the entire United States.",
             "tags": ["weather", "alerts", "emergency", "monitoring"]
-        },
-        {
-            "id": "map_alert_zones",
-            "name": "Map Alert Zones",
-            "description": "Enrich weather alerts with geographic coordinates for zone boundaries and create map markers.",
-            "tags": ["mapping", "geocoding", "visualization"]
         }
     ],
     "url": "https://weather-alerts-snapshot-agent-juqzb7sbxa-uc.a.run.app",
